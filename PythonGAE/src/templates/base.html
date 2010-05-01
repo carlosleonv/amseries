@@ -1,0 +1,37 @@
+<html>
+<head>
+<title>{% block title %}{% endblock %}</title>
+ <head>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+    <script type="text/javascript" src="/js/util.js"></script>
+    <script type="text/javascript" src="/js/jquery-1.4.2.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.core.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.widget.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.mouse.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.selectable.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.droppable.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.resizable.js"></script>
+	<script type="text/javascript" src="/js/ui/jquery.ui.dialog.js"></script>
+  </head>
+</head>
+<body>
+<h1>AM Series</h1>
+<hr/>
+<table>
+	<tr>
+		<td width="200px" valign="top">
+		<br/><a href="/search">Search series</a>
+		{% if admin %}
+		<br/><a href="/sites">Sites</a>
+		{% else %}
+		<br/><a href="/mySeries">My series</a>
+		<br/><a href="/myDL">My downloads</a>
+		{% endif %}
+		</td>
+		<td>{% block content %}{% endblock %}</td>
+	</tr>
+</table>
+<hr/>
+<a href="{{ url }}">{{ url_linktext }}</a>
+</body>
+</html>

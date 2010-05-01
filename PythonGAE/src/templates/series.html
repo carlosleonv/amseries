@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<script type="text/javascript">
+
+	// starts here
+
+    // Server object that will contain the callable methods
+    var server = {};
+
+    // Insert 'Add' as the name of a callable method
+    InstallFunction(server, 'ajaxAddSerie');
+
+    // Client function that calls a server rpc and provides a callback
+    function doAdd(key) {
+	  window.alert(doAdd);
+      server.ajaxAddSerie(key, onAddSuccess);
+    }
+
+    // Callback for after a successful doAdd
+    function onAddSuccess(response) {
+      $('trash').innerHTML = response;
+    }
+
+	function getSelected() {
+		$(function() {
+			jQuery("#selectable").find('tr').each(function() {
+				if ($(this).hasClass("ui-selected"))
+					alert('y');
+				});
+		});
+	}
+	
+	function init() {
+		$(function() {
+			jQuery("#selectable").selectable();
+		});
+	}
+	
+	jQuery(document).ready(function() {
+		init();
+	});
+
+</script>
+<h2>Search series</h2>
+
+    <form action="/search" method="post">
+      <div><label for="name">Starts with:</label>
+      <input type="text" name="name"></input><input type="submit" value="Search"></div>
+    </form>
+
+    {% if admin %}
+    <p>
+    	<a href="/createSerie" class="action">create serie</a>
+    </p>
+    {% endif %}
+	{% if series %}
+    <p>
+    	<a href="#" onclick="getSelected(); return false;" class="action">Add selected</a>
+    </p>
+  	<table class="series" cellpadding="4" cellspacing="0" border="0">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Title</th>
+		    <th>Genre</th>
+		    <th>Description</th>
+		    <th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody id="selectable">
+    {% for serie in series %}
+	        <tr class="ui-state-default">
+		        <td><img alt="{{ serie.title }} image" src="/thumbnail/{{ serie.key }}" /></td>
+		        <td>{{ serie.title }}</td>
+		        <td>{{ serie.genre.name }}</td>
+		        <td>{{ serie.desc }}</td>
+		        <td>
+		        {% if admin %}
+		        <a href="/dropSerie?key={{ serie.key }}" class="action">remove</a>
+		        {% else %}
+		        <a href="/addSerie?key={{ serie.key }}" class="action">add</a>
+		        {% endif %}
+		        </td>
+	        </tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    
+   	<div id="trash">
+	</div>
+    
+	{% endif %}
+     <br/>
+     
+     
+{% endblock %}

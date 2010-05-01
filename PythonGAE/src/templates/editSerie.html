@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Edit {{ serie.serie.title }}{% endblock %}
+
+{% block content %}
+<h2>Edit {{ serie.serie.title }}</h2>
+	<img alt="{{ serie.serie.title }} image" src="/thumbnail/{{ serie.serie.key }}" /><br /><br />
+    <form action="/editSerie" method="post">
+      <label for="episodes">Episode numbers (leave empty for all) :</label>
+      <div><input type="text" name="episodes" value='{{ serie.episodes|default:"" }}'>
+      <input type="submit" value="Save" /></input>
+      <input type="hidden" name="key" value='{{ serie.key }}'></div>
+    </form>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}My downloads{% endblock %}
+
+{% block content %}
+<h2>My downloads</h2>
+
+	{% if series %}
+  	<table class="series" cellpadding="4" cellspacing="0" border="0">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Title</th>
+		    <th>Episodes</th>
+		  </tr>
+		</thead>
+		<tbody>
+    {% for serie in series %}
+    {% ifnotequal serie.serie.episode_set.count() 0 %}
+        <tr>
+	        <td><img alt="{{ serie.serie.title }} image" src="/thumbnail/{{ serie.serie.key }}" /></td>
+	        <td>{{ serie.serie.title }}</td>
+	        <td> 
+		        {% for episode in serie.serie.episode_set %}
+		        	#{{ episode.episodeNb }} {{ episode.episodeName }} <a href="/removeEpisode/{{ episode.key }}" class="action">remove</a></li>
+		        	<ul>
+		        		{% for url in episode.urls %}
+		        		<li><a href="{{ url }}">{{ url }}</a></li>
+		    			{% endfor %}
+		        	</ul>
+		    	{% endfor %}
+	        </td>
+        </tr>
+	{% endifnotequal %}
+    {% endfor %}
+		</tbody>
+    </table>
+	{% endif %}
+
+{% endblock %}
