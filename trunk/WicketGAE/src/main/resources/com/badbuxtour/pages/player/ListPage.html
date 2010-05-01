@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+  <head>
+    <title></title>
+    <link wicket:id='stylesheet'/>
+  </head>
+  <body>
+    <span wicket:id='mainNavigation'/>
+
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Login</th>
+                <th>Last name</th>
+                <th>First name</th>
+            </tr>
+            <tr wicket:id="rows" >
+                 <td>
+                     <span wicket:id = "id">id</span>
+                </td>
+                 <td>
+                     <span wicket:id = "login">login</span>
+                </td>
+                 <td>
+                     <span wicket:id = "lastname">lastname</span>
+                </td>
+                 <td>
+                     <span wicket:id = "firstname">firstname</span>
+                </td>
+            </tr>
+        </table>
+        <span wicket:id="pager">navigation controls here</span>
+
+  </body>
+</html>
