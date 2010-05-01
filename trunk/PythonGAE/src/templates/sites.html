@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Sites{% endblock %}
+
+{% block content %}
+<h2>Sites</h2>
+	{% if admin %}
+  	<ul>
+    {% for site in sites %}
+        <li><a href="{{ site.url }}">{{ site.url }}</a>
+        {% if admin %}
+        [<a href="/dropSite?key={{ site.key }}">remove</a>] 
+        {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+    
+    <form action="/addSite" method="post">
+      <div><input type="text" name="url"></input> <input type="submit" value="Add"></div>
+    </form>
+	{% endif %}
+{% endblock %}

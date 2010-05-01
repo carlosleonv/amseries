@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Create serie{% endblock %}
+
+{% block content %}
+<h2>Create serie</h2>
+    {% if admin %}
+    <form action="/createSerie" enctype="multipart/form-data" method="post">
+    <table>
+	  <tr>
+	    <td><label for="title">Title : </label></td>
+	    <td><input type="text" name="title" ></input></td>
+	  </tr>
+	  <tr>
+	    <td><label for="genre">Genre : </label></td>
+	    <td>
+	    	<select name="genre" >
+    		{% for genre in genres %}
+    			<option value="{{genre.key}}">{{genre.name}}</option>
+    		{% endfor %}
+	    	</select>
+	    </td>
+	  </tr>
+	  <tr>
+	    <td><label for="desc">Description : </label></td>
+	    <td><textarea name="desc" ></textarea></td>
+	  </tr>
+	  <tr>
+	  <tr>
+	    <td><label for="picture">Image : </label></td>
+	    <td><input type="file" name="picture" /></td>
+	  </tr>
+	  <tr>
+	    <td><input type="submit" value="Create"></td>
+	  </tr>
+	</table>
+    </form>
+    {% endif %}
+{% endblock %}

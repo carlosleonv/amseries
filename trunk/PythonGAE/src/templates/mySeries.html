@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}My series{% endblock %}
+
+{% block content %}
+<h2>My series</h2>
+
+	{% if series %}
+    <p>
+    	<a href="#" class="action">Remove selected</a>
+    </p>
+  	<table class="series" cellpadding="4" cellspacing="0" border="0">
+		<thead>
+		  <tr>
+		    <th></th>
+		    <th>Title</th>
+		    <th>Episodes</th>
+		    <th>Actions</th>
+		  </tr>
+		</thead>
+		<tbody id="selectable">
+    {% for serie in series %}
+        <tr class="ui-state-default">
+	        <td><img alt="{{ serie.serie.title }} image" src="/thumbnail/{{ serie.serie.key }}" /></td>
+	        <td>{{ serie.serie.title }}</td>
+	        <td>
+	        {% ifequal serie.episodes "" %}
+			    <a href="/editSerie?key={{ serie.key }}"> all</a>
+			{% else %}
+			    <a href="/editSerie?key={{ serie.key }}"> {{ serie.episodes }}</a> 
+			{% endifequal %}
+	        </td>
+	        <td>
+	       		<a href="/removeSerie?key={{ serie.key }}" class="action">remove</a>
+	        </td>
+        </tr>
+    {% endfor %}
+		</tbody>
+    </table>
+	{% endif %}
+
+{% endblock %}
