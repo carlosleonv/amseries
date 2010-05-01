@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <body>
+        <wicket:panel>
+            <form wicket:id="signInForm">
+                <table>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td class="instructions">
+                            Entrer votre adresse email et votre mot de passe
+                        </td>
+                    </tr>
+                    <tr>
+                        
+                        <td align="right">
+                            Mail :
+                        </td>
+                        <td>
+                            <input wicket:id="username" type="text" value="foo@goo.moo" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">
+                            Mot de passe :
+                        </td>
+                        <td>
+                            <input wicket:id="password" type="password" value="password" size="30"/>
+                        </td>
+                    </tr>
+                    <tr wicket:id="rememberMeRow">
+                        <td>
+                            
+                        </td>
+                        <td> 
+                            <input wicket:id="rememberMe" type="checkbox" />
+                            Se souvenir de moi
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            <input type="submit" name="submit" value="Valider"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </wicket:panel>
+    </body>
+</html>

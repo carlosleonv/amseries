@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+<body>
+<wicket:panel>
+	<span wicket:id="feedback">Error Feedback Here</span>
+	<form wicket:id="createClubForm">
+	<table>
+		<tr>
+			<td></td>
+			<td class="instructions"><h2>Cr&eacute;er un club</h2></td>
+		</tr>
+		<tr>
+			<td align="right">Sigle club :</td>
+			<td><input wicket:id="club-idClub" type="text" size="30" /></td>
+		</tr>
+		<tr>
+			<td align="right">Nom club :</td>
+			<td><input wicket:id="club-name" type="text" size="30" /></td>
+		</tr>
+		<tr>
+			<td align="right">Tel club :</td>
+			<td><input wicket:id="club-phone" type="text" size="30" /></td>
+		</tr>
+		<tr>
+			<td align="right">Mail club :</td>
+			<td><input wicket:id="club-email" type="text" size="30" /></td>
+		</tr>
+		<tr>
+			<td align="right">Site club :</td>
+			<td><input wicket:id="club-webSite" type="text" size="30" /></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><input type="submit" name="submit" value="Valider" /></td>
+		</tr>
+	</table>
+	</form>
+</wicket:panel>
+
+</body>
+</html>

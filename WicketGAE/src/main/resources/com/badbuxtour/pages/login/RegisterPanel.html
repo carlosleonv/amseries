@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <body>
+        <wicket:panel>
+            <form wicket:id="registerForm">
+                <table>
+                    <tr>
+                        <td></td>
+                        <td class="instructions">Inscription au service</td>
+                    </tr>
+                    <tr>
+                        <td align="right">Nom :</td>
+                        <td>
+                            <input wicket:id="register-lastname" type="text" value="Nom" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Pr&eacute;nom :</td>
+                        <td>
+                            <input wicket:id="register-firstname" type="text" value="Prénom" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Email :</td>
+                        <td>
+                            <input wicket:id="register-email" type="text" value="foo@goo.moo" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Mot de passe :</td>
+                        <td>
+                            <input wicket:id="register-password" type="password" value="password" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Retaper mot de passe :</td>
+                        <td>
+                            <input wicket:id="repeat-password" type="password" value="password" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Sexe :</td>
+                        <td>
+                            <span wicket:id="register-gender"><input type="radio" /></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Date de naissance :</td>
+                        <td>
+                            <input wicket:id="register-birthday" type="text" value="Date naissance" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Num&eacute;ro de licence :</td>
+                        <td>
+                            <input wicket:id="register-licence" type="text" value="Licence" size="30"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">Club :</td>
+                        <td>
+                            <select wicket:id="register-club"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td>
+                            <input type="checkbox" wicket:id="register-noclub" id="noclub"/> <label for="noclub">Mon club ne figure pas dans la liste</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td>
+                            <input type="checkbox" wicket:id="register-admin" id="admin"/> <label for="admin">Je souhaite &ecirc;tre enregistr&eacute; comme administrateur de mon club sur BadBuxTour (n&eacute;cessite la validation du responsable de club)</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td>
+                            <input type="checkbox" wicket:id="register-superAdmin" id="superAdmin"/> <label for="superAdmin">superAdmin</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="submit" name="submit" value="Valider"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </wicket:panel>
+    </body>
+</html>

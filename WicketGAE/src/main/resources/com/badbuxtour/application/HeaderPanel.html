@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <head><title>Wicket Example</title></head>
+    <body>
+        <wicket:panel>
+            <div id="header">
+                <h1>BadBuxTour</h1>
+                <p id="layoutdims">
+                    <span>
+                        <a wicket:id="change-password-link">
+                            Change Password
+                        </a>
+                        &nbsp;
+                        &nbsp;
+                        <a wicket:id="logout-link">
+                            Logout
+                        </a>
+                        &nbsp;
+                        &nbsp;
+                        <a wicket:id="register-link">
+                            Inscription
+                        </a>
+                        &nbsp;
+                        &nbsp;
+                        <a wicket:id="login-link">
+                            Login
+                        </a>
+                    </span>
+                </p>
+                <div class="loginid" wicket:id="current-user">
+                    foo@bar.com
+                </div>
+            </div>
+        </wicket:panel>
+    </body>
+</html>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns:wicket="http://wicket.apache.org">
+    <body>
+        <wicket:panel>
+
+        <table>
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>N° licence</th>
+                <th>Activer/Désactiver</th>
+            </tr>
+            <tr wicket:id="rows" >
+                 <td>
+                     <span wicket:id = "lastName">lastname</span>
+                </td>
+                 <td>
+                     <span wicket:id = "firstName">firstname</span>
+                </td>
+                 <td>
+                     <span wicket:id = "licenceNumber">licenceNumber</span>
+                </td>
+                 <td>
+                     <a href="#" wicket:id="activateLink"><span wicket:id = "activateLabel">activate</span></a>
+                </td>
+            </tr>
+        </table>
+        <span wicket:id="pager">navigation controls here</span>
+        </wicket:panel>
+
+  </body>
+</html>
