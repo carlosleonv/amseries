@@ -211,15 +211,30 @@ class RPCMethods:
     """
 
     def ajaxAddSerie(self, *args):
-        # The JSON encoding may have encoded integers as strings.
-        # Be sure to convert args to any mandatory type(s).
-        #ints = [int(arg) for arg in args]
-        #return sum(ints)
-        key = args[0]
+        keys = args[0]
         if users.get_current_user():
-            datamodel.add_serie_4_user(users.get_current_user(), key)
-        return key
-
+            nb = 0
+            for key in keys:
+                result = datamodel.add_serie_4_user(users.get_current_user(), key)
+                if result == 1:
+                    nb = nb + 1
+            return nb
+        else: 
+            return -1
+        
+    def ajaxRemoveSerie(self, *args):
+        keys = args[0]
+        if users.get_current_user():
+            for key in keys:
+                datamodel.remove_serie(key)
+        
+    def ajaxEditEpisodes(self, *args):
+        keys = args[0]
+        episodes = args[1]
+        if users.get_current_user():
+            for key in keys:
+                datamodel.edit_serie(key, episodes)
+        
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/search', SearchSerie),

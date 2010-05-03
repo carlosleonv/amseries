@@ -2,18 +2,20 @@
 <head>
 <title>{% block title %}{% endblock %}</title>
  <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+		<link type="text/css" href="/css/ui-lightness/jquery-ui-1.8.1.custom.css" rel="stylesheet" />
+    <link type="text/css" rel="stylesheet" href="/css/main.css" />
     <script type="text/javascript" src="/js/util.js"></script>
     <script type="text/javascript" src="/js/jquery-1.4.2.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.core.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.widget.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.mouse.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.selectable.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.droppable.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.resizable.js"></script>
-	<script type="text/javascript" src="/js/ui/jquery.ui.dialog.js"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.8.1.custom.min.js"></script>
+    <script type="text/javascript" src="/js/jquery.bgiframe.js"></script>
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.core.js"></script>-->
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.widget.js"></script>-->
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.mouse.js"></script>-->
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.selectable.js"></script>-->
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.droppable.js"></script>-->
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.resizable.js"></script>-->
+<!--	<script type="text/javascript" src="/js/ui/jquery.ui.dialog.js"></script>-->
   </head>
-</head>
 <body>
 <h1>AM Series</h1>
 <hr/>
@@ -32,6 +34,6 @@
 	</tr>
 </table>
 <hr/>
-<a href="{{ url }}">{{ url_linktext }}</a>
+<p><a href="{{ url }}">{{ url_linktext }}</a></p>
 </body>
 </html>

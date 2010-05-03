@@ -3,24 +3,85 @@
 {% block title %}My series{% endblock %}
 
 {% block content %}
+<script type="text/javascript">
+
+	jQuery(document).ready(function() {
+		init();
+		var episodes = $("#episodes"), allFields = $( []).add(
+				episodes);
+		
+		$("#dialog")
+			.dialog(
+				{
+					bgiframe : true,
+					autoOpen : false,
+					height : 220,
+					modal : true,
+					buttons : {
+						'OK' : function() {
+							var bValid = true;
+							allFields.removeClass('ui-state-error');
+							if (bValid) {
+								var keys = new Array();
+								jQuery("#selectable").find('tr').each(function() {
+									if ($(this).hasClass("ui-selected")) {
+										var key = $(this).find('td').html();
+										keys.push(key);
+									}
+								});
+								doEditEpisodes(keys, episodes.val());
+								$(this).dialog('close');
+								redirectMySeries();
+							}
+						},
+						Cancel : function() {
+							$(this).dialog('close');
+						}
+					},
+					close : function() {
+						allFields.val('').removeClass(
+								'ui-state-error');
+					}
+				});
+	});
+
+</script>
 <h2>My series</h2>
 
+	<div id="dialog-confirm" title="Delete serie?" style="display:none;">
+		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure?</p>
+	</div>
+
 	{% if series %}
+	
+    <div id="dialog" title="Edit episodes">
+    	<form>
+		<fieldset>
+			<label for="episodes">Episode numbers (leave empty for all) :</label>
+      		<input type="text" name="episodes" id="episodes" class="text ui-widget-content ui-corner-all" value="">
+		</fieldset>
+		</form>
+	</div>
+	
     <p>
-    	<a href="#" class="action">Remove selected</a>
+    	<button class="ui-button ui-state-default ui-corner-all" onclick="removeSelected(); return false;" >Remove selected</button>
+    	<button class="ui-button ui-state-default ui-corner-all" onclick="editEpisodes(); return false;">Edit episodes</button>
+<!--    	<a href="#" onclick="removeSelected(); return false;" class="action">Remove selected</a>-->
     </p>
   	<table class="series" cellpadding="4" cellspacing="0" border="0">
 		<thead>
 		  <tr>
+		    <th style="display:none"></th>
 		    <th></th>
 		    <th>Title</th>
 		    <th>Episodes</th>
-		    <th>Actions</th>
+<!--		    <th>Actions</th>-->
 		  </tr>
 		</thead>
 		<tbody id="selectable">
     {% for serie in series %}
         <tr class="ui-state-default">
+	        <td style="display:none">{{ serie.key }}</td>
 	        <td><img alt="{{ serie.serie.title }} image" src="/thumbnail/{{ serie.serie.key }}" /></td>
 	        <td>{{ serie.serie.title }}</td>
 	        <td>
@@ -30,9 +91,9 @@
 			    <a href="/editSerie?key={{ serie.key }}"> {{ serie.episodes }}</a> 
 			{% endifequal %}
 	        </td>
-	        <td>
-	       		<a href="/removeSerie?key={{ serie.key }}" class="action">remove</a>
-	        </td>
+<!--	        <td>-->
+<!--	       		<a href="/removeSerie?key={{ serie.key }}" class="action">remove</a>-->
+<!--	        </td>-->
         </tr>
     {% endfor %}
 		</tbody>

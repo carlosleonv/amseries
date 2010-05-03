@@ -3,98 +3,152 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-
 <script type="text/javascript">
 
-	// starts here
-
-    // Server object that will contain the callable methods
-    var server = {};
-
-    // Insert 'Add' as the name of a callable method
-    InstallFunction(server, 'ajaxAddSerie');
-
-    // Client function that calls a server rpc and provides a callback
-    function doAdd(key) {
-	  window.alert(doAdd);
-      server.ajaxAddSerie(key, onAddSuccess);
-    }
-
-    // Callback for after a successful doAdd
-    function onAddSuccess(response) {
-      $('trash').innerHTML = response;
-    }
-
-	function getSelected() {
-		$(function() {
-			jQuery("#selectable").find('tr').each(function() {
-				if ($(this).hasClass("ui-selected"))
-					alert('y');
-				});
-		});
-	}
-	
-	function init() {
-		$(function() {
-			jQuery("#selectable").selectable();
-		});
-	}
-	
 	jQuery(document).ready(function() {
 		init();
+
+		var title = $("#title"), desc = $("#desc"), allFields = $( []).add(
+				title).add(desc), tips = $("#validateTips");
+
+		$("#dialog")
+				.dialog(
+						{
+							bgiframe : true,
+							autoOpen : false,
+							width : 400,
+							height : 400,
+							modal : true,
+							buttons : {
+								'OK' : function() {
+									var bValid = true;
+									allFields.removeClass('ui-state-error');
+
+									bValid = bValid
+											&& checkLength(title, "title", 3,
+													16);
+									bValid = bValid
+											&& checkLength(desc, "desc", 6, 80);
+
+									bValid = bValid
+											&& checkRegexp(title,
+													/^[a-z]([0-9a-z_])+$/i,
+													"Username may consist of a-z, 0-9, underscores, begin with a letter.");
+									// From jquery.validate.js (by joern),
+									// contributed by Scott Gonzalez:
+									// http://projects.scottsplayground.com/email_address_validation/
+									bValid = bValid
+											&& checkRegexp(
+													desc,
+													/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i,
+													"eg. ui@jquery.com");
+
+									if (bValid) {
+										$(this).dialog('close');
+									}
+								},
+								Cancel : function() {
+									$(this).dialog('close');
+								}
+							},
+							close : function() {
+								allFields.val('').removeClass('ui-state-error');
+							}
+						});
 	});
 
 </script>
 <h2>Search series</h2>
-
+    
     <form action="/search" method="post">
       <div><label for="name">Starts with:</label>
       <input type="text" name="name"></input><input type="submit" value="Search"></div>
     </form>
-
+	
+	<p>
     {% if admin %}
-    <p>
-    	<a href="/createSerie" class="action">create serie</a>
-    </p>
+    <div id="dialog" title="Create new serie">
+		<p id="validateTips">All form fields are required.</p>
+	
+    	<form action="/createSerie" enctype="multipart/form-data" method="post">
+		<fieldset>
+			<label for="title">Title</label>
+			<input type="text" name="title" id="title" class="text ui-widget-content ui-corner-all" />
+			<label for="desc">Description</label>
+			<textarea name="desc" id="desc" value="" class="text ui-widget-content ui-corner-all" cols="65" rows="4"></textarea>
+			<label for="picture">Picture</label>
+			<input type="file" name="picture" id="picture" value="" class="file ui-widget-content ui-corner-all" />
+		</fieldset>
+		</form>
+	</div>
+	    
+    <span>
+    	<button id="create-serie" class="ui-button ui-state-default ui-corner-all" onclick="createSerie(); return false;">Create new serie</button>
+<!--    	<a href="/createSerie" class="action">Create serie</a>-->
+    </span>
     {% endif %}
 	{% if series %}
-    <p>
-    	<a href="#" onclick="getSelected(); return false;" class="action">Add selected</a>
+	{% if admin %}
+    <span>
+    	<button class="ui-button ui-state-default ui-corner-all" onclick="return false;" >Remove selected</button>
+<!--    	<a href="#" onclick="return false;" class="action">Remove selected</a>-->
+    </span>
+    {% else %}
+    <span>
+    	<button class="ui-button ui-state-default ui-corner-all" onclick="addSelected();return false;" >Add selected</button>
+<!--    	<a href="#" onclick="addSelected(); return false;" class="action">Add selected</a>-->
+    </span>
+    {% endif %}
     </p>
+    
+    <div id="feedback" class="ui-widget" style="display:none;">
+		<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 0 0.7em;"> 
+			<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
+			<span id="feedback-message"></span>
+			</p>
+		</div>
+	</div>
+    <div id="error" class="ui-widget" style="display:none;">
+		<div class="ui-state-error ui-corner-all" style="padding: 0 .7em;"> 
+			<p><span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
+			<span id="error-message"></span></p>
+		</div>
+	</div>
+
+	
+<!--	<p id="feedback" class="feedback" style="display:none;"></p>-->
+	
   	<table class="series" cellpadding="4" cellspacing="0" border="0">
 		<thead>
 		  <tr>
+		    <th style="display:none"></th>
 		    <th></th>
 		    <th>Title</th>
 		    <th>Genre</th>
 		    <th>Description</th>
-		    <th>Actions</th>
+<!--		    <th>Actions</th>-->
 		  </tr>
 		</thead>
 		<tbody id="selectable">
     {% for serie in series %}
 	        <tr class="ui-state-default">
+	        	<td style="display:none">{{ serie.key }}</td>
 		        <td><img alt="{{ serie.title }} image" src="/thumbnail/{{ serie.key }}" /></td>
 		        <td>{{ serie.title }}</td>
 		        <td>{{ serie.genre.name }}</td>
 		        <td>{{ serie.desc }}</td>
-		        <td>
+<!--		        <td>-->
 		        {% if admin %}
-		        <a href="/dropSerie?key={{ serie.key }}" class="action">remove</a>
+<!--		        <a href="/dropSerie?key={{ serie.key }}" class="action">remove</a>-->
 		        {% else %}
-		        <a href="/addSerie?key={{ serie.key }}" class="action">add</a>
+<!--		        <a href="/addSerie?key={{ serie.key }}" class="action">add</a>-->
 		        {% endif %}
-		        </td>
+<!--		        </td>-->
 	        </tr>
     {% endfor %}
         </tbody>
     </table>
     
-   	<div id="trash">
-	</div>
-    
 	{% endif %}
      <br/>
-     
-     
 {% endblock %}
