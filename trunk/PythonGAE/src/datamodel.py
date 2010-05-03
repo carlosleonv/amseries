@@ -119,6 +119,9 @@ def add_serie_4_user(user, key_name):
     if len(results) == 0:
         uhs = User_has_series(owner = user, serie = db.Key(key_name))
         uhs.put()
+        return 1
+    else:
+        return 0
 
 def edit_serie(key_name, episodes):
     uhs = find(key_name)
