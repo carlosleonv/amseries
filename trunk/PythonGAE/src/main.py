@@ -164,11 +164,12 @@ class CreateSerie(BaseRequestHandler):
             title = cgi.escape(self.request.get('title'))
             desc = cgi.escape(self.request.get('desc'))
             genre_key = cgi.escape(self.request.get('genre'))
-            #tags = cgi.escape(self.request.get('tags')).split(',')
-            #tags = [tag.strip() for tag in tags]
-            # Get the actual data for the picture
-            img_data = self.request.POST.get('picture').file.read()
-            datamodel.create_serie(title, desc, db.Key(genre_key), img_data)
+            img_data = self.request.POST.get('picture')
+            if img_data != '':
+                img = img_data.file.read()
+            else:
+                img = None
+            datamodel.create_serie(title, desc, db.Key(genre_key), img)
             self.redirect('/')
         else:
             self.reject()
@@ -234,6 +235,17 @@ class RPCMethods:
         if users.get_current_user():
             for key in keys:
                 datamodel.edit_serie(key, episodes)
+                
+    def ajaxDropSerie(self, *args):
+        keys = args[0]
+        if users.is_current_user_admin():
+            for key in keys:
+                datamodel.drop_serie(key)
+                
+    def ajaxViewSerie(self, *args):
+        key = args[0]
+        o = datamodel.find(key)
+        return o.title
         
 application = webapp.WSGIApplication(
                                      [('/', MainPage),

@@ -132,31 +132,66 @@ var server = {};
 InstallFunction(server, 'ajaxAddSerie');
 InstallFunction(server, 'ajaxRemoveSerie');
 InstallFunction(server, 'ajaxEditEpisodes');
+InstallFunction(server, 'ajaxDropSerie');
+InstallFunction(server, 'ajaxViewSerie');
 
 // Client function that calls a server rpc and provides a callback
-function doAdd(key) {
-	server.ajaxAddSerie(key, onAddSuccess);
+function doAdd(keys) {
+	server.ajaxAddSerie(keys, onAddSuccess);
 }
-function doRemove(key) {
-	server.ajaxRemoveSerie(key, null);
+function doRemove(keys) {
+	server.ajaxRemoveSerie(keys, null);
 }
-function doEditEpisodes(key, val) {
-	server.ajaxEditEpisodes(key, val, null);
+function doDrop(keys) {
+	server.ajaxDropSerie(keys, null);
 }
+function doEditEpisodes(keys, val) {
+	server.ajaxEditEpisodes(keys, val, null);
+}
+function doViewSerie(key) {
+	server.ajaxViewSerie(key, onViewSuccess);
+}
+
+//Callback for after a successful viewSerie
+function onViewSuccess(response) {
+	document.getElementById("view-serie").innerHTML = response;
+
+	$(function() {
+		$('#view-serie').dialog('open');
+	});
+}
+
 
 // Callback for after a successful doAdd
 function onAddSuccess(response) {
 	if (response == '-1') {
-		document.getElementById('error').style.display = 'block';
+//		document.getElementById('error').style.display = 'block';
+		$(function() {
+			$("#error").css( {
+				display : 'block'
+			}).animate( {
+				opacity : 1
+			}, 500, 'swing');
+		});
 		document.getElementById("error-message").innerHTML = 'You are not logged in !';
 		return false;
 	}
-	document.getElementById('feedback').style.display = 'block';
+//	document.getElementById('feedback').style.display = 'block';
+	$(function() {
+		$("#feedback").css( {
+			display : 'block'
+		}).fadeIn(3000, function() {
+	        // Animation complete
+		});
+
+	});
 	document.getElementById("feedback-message").innerHTML = response + ' serie(s) added';
 }
 
-function redirectMySeries(response) {
-	window.location = '/mySeries';
+var mySeries = '/mySeries';
+var series = '/search';
+function redirect(path) {
+	window.location = path;
 }
 
 function addSelected() {
@@ -176,24 +211,45 @@ function addSelected() {
 }
 
 function removeSelected() {
+	var keys = new Array();
+	jQuery("#selectable").find('tr').each(function() {
+		if ($(this).hasClass("ui-selected")) {
+			var key = $(this).find('td').html();
+			keys.push(key);
+		}
+	});
+	doRemove(keys);
+	$('#dialog-confirm').dialog('close');
+	redirect(mySeries);
+}
+
+function dropSelected() {
+	var keys = new Array();
+	jQuery("#selectable").find('tr').each(function() {
+		if ($(this).hasClass("ui-selected")) {
+			var key = $(this).find('td').html();
+			keys.push(key);
+		}
+	});
+	doDrop(keys);
+	$('#dialog-confirm').dialog('close');
+	redirect(series);
+}
+
+function callFunction(xFunc) {
+	eval(xFunc + "()");
+}
+
+function confirm(functionName) {
 	$(function() {
 		if (jQuery("#selectable").find('tr').hasClass("ui-selected")) {
 			jQuery("#dialog-confirm").dialog( {
 				resizable : false,
-				height : 140,
+				height : 150,
 				modal : true,
 				buttons : {
 					'OK' : function() {
-						var keys = new Array();
-						jQuery("#selectable").find('tr').each(function() {
-							if ($(this).hasClass("ui-selected")) {
-								var key = $(this).find('td').html();
-								keys.push(key);
-							}
-						});
-						doRemove(keys);
-						$(this).dialog('close');
-						redirectMySeries();
+						callFunction(functionName);
 					},
 					Cancel : function() {
 						$(this).dialog('close');
@@ -229,20 +285,71 @@ function checkRegexp(o, regexp, n) {
 	}
 }
 
+function addSerie(key) {
+	var keys = new Array(key);
+	doAdd(keys);
+}
+
+function viewSerie(key) {
+	doViewSerie(key);
+}
+
 function createSerie() {
 	$(function() {
 		$('#dialog').dialog('open');
 	});
 }
-	
+
 function editEpisodes() {
 	$(function() {
-		$('#dialog').dialog('open');
+		objects = $("#selectable").find('tr.ui-selected');
+		if (objects.length > 0) {
+			// fill in the episode field with the value of the selected line
+			if (objects.length == 1) {
+				var episodes = objects.find('td.episodes');
+				if (episodes.html() != "all")
+					$('#episodes').val(episodes.html());
+			}
+			$('#dialog').dialog('open');
+		}
 	});
 }
 
 function init() {
 	$(function() {
+		$("button.add").button( {
+			icons : {
+				primary : 'ui-icon-circle-plus'
+			}
+		});
+		$("button.remove").button( {
+			icons : {
+				primary : 'ui-icon-circle-minus'
+			}
+		});
+		$("button.edit").button( {
+			icons : {
+				primary : 'ui-icon-wrench'
+			}
+		});
+		$("button.search").button( {
+			icons : {
+				primary : 'ui-icon-search'
+			}
+		});
+		$("button.short-view").button( {
+			text : false,
+			icons : {
+				primary : 'ui-icon-zoomin'
+			}
+		});
+		$("button.short-add").button( {
+			text : false,
+			icons : {
+				primary : 'ui-icon-plusthick'
+			}
+		});
+
 		jQuery("#selectable").selectable();
 
 		$('button').hover(function() {
@@ -255,5 +362,59 @@ function init() {
 			$(this).removeClass("ui-state-active");
 		});
 
+		$('.bubbleInfo').each(function() {
+			var distance = 10;
+			var time = 250;
+			var hideDelay = 500;
+
+			var hideDelayTimer = null;
+
+			var beingShown = false;
+			var shown = false;
+			var trigger = $('.trigger', this);
+			var info = $('.popup', this).css('opacity', 0);
+
+			$( [ trigger.get(0), info.get(0) ]).mouseover(function() {
+				if (hideDelayTimer)
+					clearTimeout(hideDelayTimer);
+				if (beingShown || shown) {
+					// don't trigger the animation again
+					return;
+				} else {
+					// reset position of info box
+					beingShown = true;
+
+					info.css( {
+						top : 0,
+						left : 0,
+						display : 'block'
+					}).animate( {
+						top : '-=' + distance + 'px',
+						opacity : 1
+					}, time, 'swing', function() {
+						beingShown = false;
+						shown = true;
+					});
+				}
+
+				return false;
+			}).mouseout(function() {
+				if (hideDelayTimer)
+					clearTimeout(hideDelayTimer);
+				hideDelayTimer = setTimeout(function() {
+					hideDelayTimer = null;
+					info.animate( {
+						top : '-=' + distance + 'px',
+						opacity : 0
+					}, time, 'swing', function() {
+						shown = false;
+						info.css('display', 'none');
+					});
+
+				}, hideDelay);
+
+				return false;
+			});
+		});
 	});
 }
