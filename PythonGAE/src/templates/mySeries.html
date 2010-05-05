@@ -31,7 +31,7 @@
 								});
 								doEditEpisodes(keys, episodes.val());
 								$(this).dialog('close');
-								redirectMySeries();
+								redirect(mySeries);
 							}
 						},
 						Cancel : function() {
@@ -48,10 +48,6 @@
 </script>
 <h2>My series</h2>
 
-	<div id="dialog-confirm" title="Delete serie?" style="display:none;">
-		<p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure?</p>
-	</div>
-
 	{% if series %}
 	
     <div id="dialog" title="Edit episodes">
@@ -64,10 +60,13 @@
 	</div>
 	
     <p>
-    	<button class="ui-button ui-state-default ui-corner-all" onclick="removeSelected(); return false;" >Remove selected</button>
-    	<button class="ui-button ui-state-default ui-corner-all" onclick="editEpisodes(); return false;">Edit episodes</button>
+	<span id="toolbar">
+    	<button class="ui-button ui-state-default ui-corner-all remove" onclick="confirm('removeSelected'); return false;" >Remove selected</button>
+    	<button class="ui-button ui-state-default ui-corner-all edit" onclick="editEpisodes(); return false;">Edit episodes</button>
 <!--    	<a href="#" onclick="removeSelected(); return false;" class="action">Remove selected</a>-->
+    </span>
     </p>
+    
   	<table class="series" cellpadding="4" cellspacing="0" border="0">
 		<thead>
 		  <tr>
@@ -84,13 +83,7 @@
 	        <td style="display:none">{{ serie.key }}</td>
 	        <td><img alt="{{ serie.serie.title }} image" src="/thumbnail/{{ serie.serie.key }}" /></td>
 	        <td>{{ serie.serie.title }}</td>
-	        <td>
-	        {% ifequal serie.episodes "" %}
-			    <a href="/editSerie?key={{ serie.key }}"> all</a>
-			{% else %}
-			    <a href="/editSerie?key={{ serie.key }}"> {{ serie.episodes }}</a> 
-			{% endifequal %}
-	        </td>
+	        <td class="episodes">{% ifequal serie.episodes "" %}all{% else %}{{ serie.episodes }}{% endifequal %}</td>
 <!--	        <td>-->
 <!--	       		<a href="/removeSerie?key={{ serie.key }}" class="action">remove</a>-->
 <!--	        </td>-->
